@@ -20,7 +20,7 @@ import pandas as pd
 
 from meta_population_models.mass_gathering_model import MassGatheringModel
 # import function for calculating beta from R_0
-from meta_population_models.reproductive_numbers.Beta_and_Reproduction import MGE_beta_no_vaccine_1_cluster
+from meta_population_models.reproductive_numbers.MGE_single_population_functions import MGE_beta_no_vaccine_1_cluster
 # import seeding methods
 from utils.multinomail_seeding import MultnomialSeeder
 from event_handling.event_que import EventQueue
