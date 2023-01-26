@@ -22,11 +22,11 @@ from meta_population_models.mass_gathering_model import MassGatheringModel
 # import function for calculating beta from R_0
 from meta_population_models.reproductive_numbers.MGE_single_population_functions import MGE_beta_no_vaccine_1_cluster
 # import seeding methods
-from utils.multinomail_seeding import MultnomialSeeder
+from seeding_infections.multinomail_seeding import MultnomialSeeder
 from event_handling.event_que import EventQueue
-from utils.pop_setup import gen_host_sub_popultion, gen_visitor_sub_population
-from utils.cluster_params import (list_to_and_from_cluster_param, list_cluster_param,
-                                  update_params_with_to_from_cluster_param, update_params_with_cluster_param)
+from simulation_classes.inernational_sports_match.pop_setup import gen_host_sub_popultion, gen_visitor_sub_population
+from simulation_classes.general_setup_functions.cluster_params import (list_to_and_from_cluster_param, list_cluster_param,
+                                                                       update_params_with_to_from_cluster_param, update_params_with_cluster_param)
 
 
 

@@ -8,12 +8,12 @@ Code adapted from function LH_sampling.LHS_and_PRCC.LHS_and_PRCC_parallel to run
 'Analyses of Travel Vaccination Restrictions' section of manuscript.
 """
 import pandas as pd
-from utils.load_variables_and_parameters import load_parameters
+from simulation_classes.inernational_sports_match.load_variables_and_parameters import load_parameters
 from LH_sampling.LHS_and_PRCC_parallel import run_samples_in_parrallell
 from LH_sampling.LHS_and_PRCC_serial import format_sample
 from scipy.stats import qmc
 import os
-from simulations.sports_match_sim import SportMatchMGESimulation
+from simulation_classes.inernational_sports_match.sports_match_sim import SportMatchMGESimulation
 import multiprocessing
 
 if __name__ == '__main__':

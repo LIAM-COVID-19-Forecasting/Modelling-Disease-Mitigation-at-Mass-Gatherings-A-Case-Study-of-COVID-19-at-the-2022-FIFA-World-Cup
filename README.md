@@ -11,30 +11,54 @@ Supplementary Material for article Modelling Disease Mitigation at Mass Gatherin
 - pingouin
 - sympy (Only required to run meta_population_models\reproductive_numbers\MGE_single_population_derivation.py)
 
+## Contents
 
-## Core ODE model and Generalisable Framework for Modelling Mass Gathering Events.
-This can be found in the directory meta_population_models.
+### Analyses_of_Testing_Strategies
 
-## Event Queue and Events
-This can be found in event_handling.
+- Analyses_of_Testing_Strategies_Simulations.py : runs simulations outlined in 
+this section of manuscript. 
+- Analyses_of_Testing_Strategies_Figures.py : Performs
+PCC analyses and produces figures from the results of simulations.
+
+### Analyses_of_Travel_Vaccination_Restrictions
+
+- Analyses_of_Travel_Vaccination_Restrictions_Simulations.py : runs simulations outlined in 
+this section of manuscript. 
+- Analyses_of_Travel_Vaccination_Restrictions_Figures.py : Produces figures from the results of these simulations.
+
+
+### event_handling 
+- event_que.py : Event queue described in Event Queue section of manuscript. 
+- events.py : Events described in 'Event Queue' and 'Simulation of a FIFA 2022 World Cup Match' section of manuscript.
+
+### LH_sampling
+Code for Latin Hypercube sampling, simulating parameter samples via parallel processing and performing Partial
+Correlation Coefficient analyses.
+
+### meta_population_models
+- base_meta_structure.py : Generalisable Framework for Models with stratified populations.
+- mass_gathering_model.py : Core ODE model outlined in manuscript.
+- meta_population_structures : Contains code for generating and json file outlining metapopulation structure described
+sections Vaccine Groups and Clusters of manuscript.
+- reproductive_numbers : Derivation of models R0 and beta, under no stratification of population or vaccination, as well
+as functions for calculating them.
+
+## seeding_infections
+Code for probabilistic seeding of infections into multi-infection branch/pathway model.
+
+## simulation_classes
+Classes and function that bring together code in meta_population_models and event_handling to simulate Mass Gathering
+events. The sub-directory international_sport_match simulate the model and events outlined in the 'Simulation of a FIFA
+2022 World Cup Match' section of the manuscript.
+
+## parameters
+Parameters used in simulations. Subdirectory data_extraction contains code and files for obtaining prevalence data for
+countries in FIFA 2022 world cup.
 
 
 
-
-## Analyses of Testing Strategies
-
-Analyses_of_Testing_Strategies_Simulations.py runs simulations outlined in 
-this section of manuscript. Analyses_of_Testing_Strategies_Figures.py then performs
-PCC analyses and produces figures from the results of these simulations.
-
-## Analyses of Travel Vaccination Restrictions Figures
-
-Analyses_of_Travel_Vaccination_Restrictions_Simulations.py runs simulations outlined in 
-this section of manuscript. Analyses_of_Travel_Vaccination_Restrictions_Figures.py
-then produces figures from the results of these simulations.
-
-## Derivation of Basic Reproductive Number (R_0)
-
+## Notes 
+### Derivation of Basic Reproductive Number (R_0)
 This can be found in 
 meta_population_models\reproductive_numbers\MGE_single_population_derivation.py
 

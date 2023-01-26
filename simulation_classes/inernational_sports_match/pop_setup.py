@@ -2,7 +2,7 @@
 Creation:
     Author: Marting Grunnill
     Date: 2022-09-20
-Description: Code for setting up population for running mass gathering models
+Description: Code for setting up population for international sports match simulations.
     
 """
 import math

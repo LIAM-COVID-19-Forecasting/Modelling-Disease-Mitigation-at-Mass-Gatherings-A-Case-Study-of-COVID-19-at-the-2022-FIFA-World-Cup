@@ -2,7 +2,8 @@
 Creation:
     Author: Martin Grunnill
     Date: 2022-11-02
-Description: Wrapper functions for loading parameters and variebles from csvs.
+Description: Wrapper functions for loading parameters and variables from csvs for international sports match
+             simulations.
     
 """
 import pandas as pd
