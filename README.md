@@ -55,6 +55,9 @@ events. The sub-directory international_sport_match simulate the model and event
 Parameters used in simulations. Subdirectory data_extraction contains code and files for obtaining prevalence data for
 countries in FIFA 2022 world cup.
 
+## Qatars_COVID_Cases_During_World_Cup
+Contains code producing figures of detected, hospitalised and ICU cases of COVID-19 in Qatar around the time of the
+World Cup. 
 
 
 ## Notes 

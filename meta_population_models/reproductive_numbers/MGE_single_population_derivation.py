@@ -21,26 +21,26 @@ for list_of_symbols in [all_params, all_states]:
 
 odes = sympy.Matrix([[R*alpha - S*beta*(F_A*theta + F_I + M_A*theta + M_H + M_I + P_A*theta + P_I*theta)/N],
                      [-E*epsilon_1*p_s - E*epsilon_1*(1 - p_s) + S*beta*(F_A*theta + F_I + M_A*theta + M_H + M_I + P_A*theta + P_I*theta)/N],
+                     [E * epsilon_1 * (1 - p_s) - G_A * epsilon_2],
                      [E*epsilon_1*p_s - G_I*epsilon_2],
-                     [E*epsilon_1*(1 - p_s) - G_A*epsilon_2],
-                     [G_I*epsilon_2 - P_I*epsilon_3*p_h_s - P_I*epsilon_3*(1 - p_h_s)],
                      [G_A*epsilon_2 - P_A*epsilon_3],
-                     [-M_H*epsilon_H + P_I*epsilon_3*p_h_s],
-                     [-M_I*gamma_I_1 + P_I*epsilon_3*(1 - p_h_s)],
+                     [G_I * epsilon_2 - P_I * epsilon_3 * p_h_s - P_I * epsilon_3 * (1 - p_h_s)],
                      [-M_A*gamma_A_1 + P_A*epsilon_3],
+                     [-M_I*gamma_I_1 + P_I*epsilon_3*(1 - p_h_s)],
+                     [-M_H*epsilon_H + P_I*epsilon_3*p_h_s],
+                     [-F_A * gamma_A_2 + M_A * gamma_A_1],
+                     [-F_I * gamma_I_2 + M_I * gamma_I_1],
                      [-F_H*gamma_H + M_H*epsilon_H],
-                     [-F_I*gamma_I_2 + M_I*gamma_I_1],
-                     [-F_A*gamma_A_2 + M_A*gamma_A_1],
                      [F_A*gamma_A_2 + F_H*gamma_H + F_I*gamma_I_2 - R*alpha]])
 
 infecteds = odes[1:-1]
 infecteds = sympy.Matrix(odes[1:-1])
 infecteds = infecteds.subs(S, N)
 infecteds_jacobian = infecteds.jacobian(X=[E,
-                                           G_I, G_A,
-                                           P_I, P_A,
-                                           M_H, M_I, M_A,
-                                           F_H, F_I, F_A
+                                           G_A, G_I,
+                                           P_A, P_I,
+                                           M_A, M_I, M_H,
+                                           F_A, F_I, F_H
                                            ])
 
 # e.g. removing people becoming infected from the jacobian above.
