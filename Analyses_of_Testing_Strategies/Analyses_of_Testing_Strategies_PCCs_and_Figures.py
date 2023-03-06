@@ -19,8 +19,8 @@ from tqdm import tqdm
 import string
 import scipy
 
-sample_size = 10
-data_dir = 'C:/Data/World Cup Modelling Test Changes'
+sample_size = 10000
+data_dir = 'C:/Data/World Cup Modelling'
 data_dir = data_dir + '/Assesing testing regimes with LH sample Size ' + str(sample_size)+'/'
 fig_dir = data_dir +'/Figures'
 if not os.path.exists(fig_dir):
@@ -274,7 +274,7 @@ relative_diffs = []
 for testing_regime in actual_testing_regimes:
     relative_diff = (results_pivoted[testing_regime]-results_pivoted['No Testing'])/results_pivoted['No Testing']
     relative_diff.name = testing_regime
-    relative_diffs.append(relative_diff)
+    relative_diffs.append(relative_diff*100)
 
 relative_diffs = pd.concat(relative_diffs, axis=1)
 relative_diffs = relative_diffs.stack()
@@ -290,10 +290,24 @@ fig = sns.catplot(data=relative_diffs,
                   sharex=False, palette=palette_dict, kind="box", showmeans=True, meanprops=box_plot_mean_marker)
 axes = fig.axes
 for index, ax in enumerate(axes):
-    ax.set(xlabel = outputs[index].title())
+    ax.set(xlabel = '% Difference in ' + outputs[index].title())
 fig.set_titles(col_template="", row_template="")
 plt.tight_layout()
 plt.savefig(fig_dir+'Relative Difference Boxplots Testing regimes vs No Testing.png')
+
+plt.figure()
+control_df = results_reshaped[results_reshaped['Testing Regime'] == 'No Testing']
+fig = sns.catplot(data=control_df ,
+                  height=7, aspect=0.9,
+                  x='people', margin_titles=False,
+                  col='Output', col_order=outputs, col_wrap=2,
+                  sharex=False, color=palette_dict['No Testing'], kind="box", showmeans=True, meanprops=box_plot_mean_marker)
+axes = fig.axes
+for index, ax in enumerate(axes):
+    ax.set(xlabel = outputs[index].title())
+fig.set_titles(col_template="", row_template="")
+plt.tight_layout()
+plt.savefig(fig_dir+'Control Relative Difference Boxplots Testing regimes vs No Testing.png')
 
 plt.figure()
 fig = sns.catplot(data=relative_diffs,
@@ -303,11 +317,26 @@ fig = sns.catplot(data=relative_diffs,
                   sharex=False, palette=palette_dict, kind="box", showmeans=True, meanprops=box_plot_mean_marker)
 axes = fig.axes
 for index, ax in enumerate(axes):
-    ax.set(xlabel =just_totals_outputs[index].title())
+    ax.set(xlabel = '% Difference in ' + just_totals_outputs[index].title())
 fig.set_titles(col_template="", row_template="")
 plt.tight_layout()
+plt.figtext(0.025, 0.05, s='B:', fontdict={'fontsize':'xx-large',
+                                           'fontweight':'bold'})
 plt.savefig(fig_dir+'Relative Difference Boxplots Testing regimes vs No Testing (Totals).png')
-
+plt.figure()
+fig = sns.catplot(data=control_df ,
+                  height=1.5, aspect=1.9,
+                  x='people', margin_titles=False,
+                  col='Output', col_order=just_totals_outputs, col_wrap=2,
+                  sharex=False, color=palette_dict['No Testing'], kind="box", showmeans=True, meanprops=box_plot_mean_marker)
+axes = fig.axes
+for index, ax in enumerate(axes):
+    ax.set(xlabel = outputs[index].title())
+fig.set_titles(col_template="", row_template="")
+plt.tight_layout()
+plt.figtext(0.01, 0.01, s='A:', fontdict={'fontsize':'small',
+                                          'fontweight':'bold'})
+plt.savefig(fig_dir+'Control Relative Difference Boxplots Testing regimes vs No Testing (Totals).png')
 
 
 
@@ -364,8 +393,5 @@ desired_columns = ['Test Regime',
 sig_diffs_df = sig_diffs_df[desired_columns]
 sig_diffs_df.to_csv(fig_dir+'Comparison of props vaccinated and testing regimes.csv',
                     index=False)
-
-#%%
-# Difference for pre-travel RT-PCR
 
 
