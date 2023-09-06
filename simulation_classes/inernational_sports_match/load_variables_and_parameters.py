@@ -7,9 +7,10 @@ Description: Wrapper functions for loading parameters and variables from csvs fo
     
 """
 import pandas as pd
+import os
 
 def load_parameters(file='Parameters values in LHS Sports Match Sims.xlsx',
-                    directory='C:/Users/mdgru/OneDrive/Documents/GitHub/Cluster_Vaccination_Meta_Models'):
+                    directory='parameters'):
     parameters_df = pd.read_excel(directory+'/'+file, sheet_name='Sheet1',index_col='Parameter')
     fixed_params = parameters_df['Fixed Value'].dropna()
     fixed_params = fixed_params.to_dict()

@@ -13,20 +13,6 @@ Supplementary Material for article Modelling Disease Mitigation at Mass Gatherin
 
 ## Contents
 
-### Analyses_of_Testing_Strategies
-
-- Analyses_of_Testing_Strategies_Simulations.py : runs simulations outlined in 
-this section of manuscript. 
-- Analyses_of_Testing_Strategies_Figures.py : Performs
-PCC analyses and produces figures from the results of simulations.
-
-### Analyses_of_Travel_Vaccination_Restrictions
-
-- Analyses_of_Travel_Vaccination_Restrictions_Simulations.py : runs simulations outlined in 
-this section of manuscript. 
-- Analyses_of_Travel_Vaccination_Restrictions_Figures.py : Produces figures from the results of these simulations.
-
-
 ### event_handling 
 - event_que.py : Event queue described in Event Queue section of manuscript. 
 - events.py : Events described in 'Event Queue' and 'Simulation of a FIFA 2022 World Cup Match' section of manuscript.
@@ -43,21 +29,32 @@ sections Vaccine Groups and Clusters of manuscript.
 - reproductive_numbers : Derivation of models R0 and beta, under no stratification of population or vaccination, as well
 as functions for calculating them.
 
-## seeding_infections
+### Qatars_COVID_Cases_During_World_Cup
+Contains code producing figures of detected, hospitalised and ICU cases of COVID-19 in Qatar around the time of the
+World Cup. 
+
+### seeding_infections
 Code for probabilistic seeding of infections into multi-infection branch/pathway model.
 
-## simulation_classes
+### simulation_classes
 Classes and function that bring together code in meta_population_models and event_handling to simulate Mass Gathering
 events. The sub-directory international_sport_match simulate the model and events outlined in the 'Simulation of a FIFA
 2022 World Cup Match' section of the manuscript.
 
-## parameters
-Parameters used in simulations. Subdirectory data_extraction contains code and files for obtaining prevalence data for
-countries in FIFA 2022 world cup.
+### Running_and_analysing_simulations
+- Analyses_of_Testing_Strategies_Simulations.py : runs simulations outlined in
+  this section of manuscript.
+- Analyses_of_Testing_Strategies_Figures.py : Performs
+  PCC analyses and produces figures from the results of simulations.
+- Analyses_of_Travel_Vaccination_Restrictions_Simulations.py : runs simulations outlined in
+  this section of manuscript.
+- Analyses_of_Travel_Vaccination_Restrictions_Figures.py : Produces figures from the results of these simulations.
+- parameters : Parameters used in simulations.
+  - 'Parameters values in LHS Sports Match Sims.xlsx' contains parameters used in simulations.
+  - Subdirectory data_extraction contains code and files for obtaining prevalence data for
+    countries in FIFA 2022 world cup.
 
-## Qatars_COVID_Cases_During_World_Cup
-Contains code producing figures of detected, hospitalised and ICU cases of COVID-19 in Qatar around the time of the
-World Cup. 
+
 
 
 ## Notes 

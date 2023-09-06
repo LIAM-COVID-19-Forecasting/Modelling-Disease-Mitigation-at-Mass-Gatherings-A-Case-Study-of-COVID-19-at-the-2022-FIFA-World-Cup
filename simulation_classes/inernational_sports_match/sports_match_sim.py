@@ -383,11 +383,32 @@ class SportMatchMGESimulation:
             self.event_queue.change_event_proportion('Pre-match RTPCR',
                                                      parameters['tau_{RTPCR}'])
         if parameters['Pre-travel RA']:
-            self.event_queue.change_event_proportion('Pre-travel RA',
-                                                     parameters['tau_{RA}'])
+            if parameters['Pre-travel RA'] == 'low':
+                self.event_queue.change_event_proportion('Pre-travel RA',
+                                                         parameters['tau_{RA} low'])
+            elif parameters['Pre-travel RA'] == 'mid':
+                self.event_queue.change_event_proportion('Pre-travel RA',
+                                                         parameters['tau_{RA} mid'])
+            elif parameters['Pre-travel RA'] == 'high':
+                self.event_queue.change_event_proportion('Pre-travel RA',
+                                                         parameters['tau_{RA} high'])
+            else:
+                raise ValueError('"Pre-travel RA" entry in parameters should be False or ' +
+                                 'a string value of "low", "mid" or "high".')
+
         if parameters['Pre-match RA']:
-            self.event_queue.change_event_proportion('Pre-match RA',
-                                                     parameters['tau_{RA}'])
+            if parameters['Pre-match RA'] == 'low':
+                self.event_queue.change_event_proportion('Pre-match RA',
+                                                         parameters['tau_{RA} low'])
+            elif parameters['Pre-match RA'] == 'mid':
+                self.event_queue.change_event_proportion('Pre-match RA',
+                                                         parameters['tau_{RA} mid'])
+            elif parameters['Pre-match RA'] == 'high':
+                self.event_queue.change_event_proportion('Pre-match RA',
+                                                         parameters['tau_{RA} high'])
+            else:
+                raise ValueError('"Pre-match RA" entry in parameters should be False or ' +
+                                 'a string value of "low", "mid" or "high".')
 
         # setting up populations
         # Setting up host population

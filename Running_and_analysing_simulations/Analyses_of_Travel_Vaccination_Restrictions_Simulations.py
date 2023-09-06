@@ -21,7 +21,7 @@ if __name__ == '__main__':
     parameters_df, fixed_parameters = load_parameters()
     parameters_df = parameters_df[~parameters_df.index.isin(['v_A','v_B'])]
     other_samples_to_repeat = None
-    sample_size = 10
+    sample_size = 10000
     props_effectivly_vaccinated = [0.0, 0.25, 0.5, 0.75, 1.0]
     save_dir = 'C:/Data/World Cup Modelling Test Changes'  #  directory for saving resuls into.
     save_dir = save_dir + '/Assesing vaccination with LH sample Size ' + str(sample_size)

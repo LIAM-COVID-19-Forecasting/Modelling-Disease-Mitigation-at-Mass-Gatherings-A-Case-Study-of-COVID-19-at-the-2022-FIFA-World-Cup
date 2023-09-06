@@ -19,8 +19,8 @@ from tqdm import tqdm
 import string
 import scipy
 
-sample_size = 10000
-data_dir = 'C:/Data/World Cup Modelling'
+sample_size = 100
+data_dir = 'C:/Data/World Cup Modelling Test Changes' # Where the data from the simulations is held.
 data_dir = data_dir + '/Assesing testing regimes with LH sample Size ' + str(sample_size)+'/'
 fig_dir = data_dir +'/Figures'
 if not os.path.exists(fig_dir):
@@ -42,13 +42,23 @@ LH_sample = pd.read_csv(data_dir+'LH sample.csv')
 parameters_sampled = LH_sample.columns.to_list()
 parameters_sampled.remove('Sample Number')
 testing_regimes = ['Pre-travel RTPCR',
-                   'Pre-travel RA',
+                   'Pre-travel RA low',
+                   'Pre-travel RA mid',
+                   'Pre-travel RA high',
                    'Pre-match RTPCR',
-                   'Pre-match RA',
+                   'Pre-match RA low',
+                   'Pre-match RA mid',
+                   'Pre-match RA high',
                    'Double RTPCR',
-                   'Double RA',
-                   'RTPCR then RA',
-                   'RA then RTPCR',
+                   'Double RA low',
+                   'Double RA mid',
+                   'Double RA high',
+                   'RTPCR then RA low',
+                   'RTPCR then RA mid',
+                   'RTPCR then RA high',
+                   'RA low then RTPCR',
+                   'RA mid then RTPCR',
+                   'RA high then RTPCR',
                    'No Testing'
                    ]
 testing_regimes_labels = [testing_regime.replace(' ', '\n') for testing_regime in testing_regimes]
@@ -56,7 +66,7 @@ actual_testing_regimes = copy.deepcopy(testing_regimes)
 actual_testing_regimes.remove('No Testing')
 actual_testing_regimes_labels = [testing_regime.replace(' ', '\n') for testing_regime in actual_testing_regimes]
 sns.set_style("darkgrid", {"grid.color": ".6", "grid.linestyle": ":"})
-palette = sns.color_palette()
+palette = sns.color_palette(palette='tab20', n_colors=len(testing_regimes))
 palette_dict = {testing_regime:palette[index] for index, testing_regime in enumerate(testing_regimes)}
 alphabet = list(string.ascii_lowercase) # for assigning leters to sub figures.
 box_plot_mean_marker = {"marker":"o",
