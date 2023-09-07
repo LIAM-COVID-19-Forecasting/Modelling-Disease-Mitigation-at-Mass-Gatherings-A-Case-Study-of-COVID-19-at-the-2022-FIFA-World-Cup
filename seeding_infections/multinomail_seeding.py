@@ -11,7 +11,7 @@ MultnomialSeeder
     
 """
 from numbers import Number
-from numpy.random import multinomial
+import numpy as np
 import math
 
 class _InfectionBranch:
@@ -82,7 +82,7 @@ class _InfectionBranch:
 
         return noramlised_weightings
 
-    def seed_infections(self, n, parameters):
+    def seed_infections(self, n, parameters, rng=None):
         """
         Make multinomial draw to select infectious stages of this branch to seed infection into.
 
@@ -92,17 +92,20 @@ class _InfectionBranch:
             Number of infections to seed.
         parameters : dict {str: Number}
             Dictionary of parameter values.
+        rng : numpy random number generator, optional.
+            Random number generator to use.
 
         Returns
         -------
         draw_dict : dict {str: int}
             Keys are states values are number of infections in state.
         """
-
+        if rng is None:
+            rng = np.random.default_rng()
         weighting = self.calculate_weighting(parameters)
         pvals = list(weighting.values())
         states = list(weighting.keys())
-        draw = multinomial(n=n, pvals=pvals, size=1)
+        draw = rng.multinomial(n=n, pvals=pvals, size=1)
         draw = draw[0]
         draw_dict = {state: draw[index] for index, state in enumerate(states)}
         return draw_dict
@@ -137,11 +140,24 @@ class MultnomialSeeder:
             raise TypeError('branch_info should be a dictionary.')
         self.branches = {}
         self.parameters = set()
+        self.rng = None
         for branch_name, outflows in branch_info.items():
             self.parameters.update(list(outflows.values()))
             if not isinstance(branch_info, dict):
                 raise TypeError('branch_info should be a dictionary of dictionaries.')
             self.branches[branch_name] = _InfectionBranch(branch_name, outflows)
+
+    def set_seed(self,seed):
+        """
+        Sets random number generator seed.
+
+        Parameters
+        ----------
+        seed : int (>0)
+
+        """
+        self.rng = np.random.default_rng(seed)
+
     def _seed_branches(self, n, branch_probability):
         """
         Make multinomial draw for which infection branch to place a host.
@@ -158,9 +174,13 @@ class MultnomialSeeder:
         draw_dict : dict {str: int}
             Keys are branches values are number of infections on branch.
         """
+        if self.rng is None:
+            rng = np.random.default_rng()
+        else:
+            rng = self.rng
         pvals = list(branch_probability.values())
         branches = list(branch_probability.keys())
-        draw = multinomial(n=n, pvals=pvals, size=1)
+        draw = rng.multinomial(n=n, pvals=pvals, size=1)
         draw = draw[0]
         draw_dict = {branch: draw[index] for index, branch in enumerate(branches)}
         return draw_dict
@@ -196,7 +216,7 @@ class MultnomialSeeder:
         infections_draw = {}
         for branch_name, branch_seed in branch_draw.items():
             branch = self.branches[branch_name]
-            branch_infection_draw = branch.seed_infections(branch_seed, parameters)
+            branch_infection_draw = branch.seed_infections(branch_seed, parameters, self.rng)
             states_already_drawn = set(infections_draw.keys()).union(set(branch_infection_draw.keys()))
             updated_infection_draws = {state: branch_infection_draw.get(state, 0) + infections_draw .get(state, 0)
                                        for state in states_already_drawn}

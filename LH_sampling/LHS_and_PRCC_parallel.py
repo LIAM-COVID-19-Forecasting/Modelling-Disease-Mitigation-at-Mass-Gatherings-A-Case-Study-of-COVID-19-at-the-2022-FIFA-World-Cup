@@ -70,7 +70,8 @@ def LHS_and_PRCC_parallel(parameters_df,
                           results_csv = None,
                           LHS_obj=None,
                           other_samples_to_repeat=None,
-                          max_workers=None):
+                          max_workers=None,
+                          LHS_include_seed=True):
     """
     Generate a Latin Hypercube sample, run model with sample (in parallel) and calculate PRCC for sampled parameters.
 
@@ -90,15 +91,21 @@ def LHS_and_PRCC_parallel(parameters_df,
     other_samples_to_repeat :
     max_workers : int, optional defaults to maximum available.
         Number of workers/cpu/cores used in running simulations
+    LHS_include_seed : bool
+        Include generation of a seed in Latin Hypercube sampling.
 
     Returns
     -------
 
     """
     if LHS_obj is None:
-        LHS_obj = qmc.LatinHypercube(len(parameters_df))
+        num_LH_parameters_sampled = len(parameters_df)
+        if LHS_include_seed:
+            num_LH_parameters_sampled += 1
+        LHS_obj = qmc.LatinHypercube(num_LH_parameters_sampled)
     LH_sample = LHS_obj.random(sample_size)
-    sample_df, parameters_sampled = format_sample(parameters_df, LH_sample, other_samples_to_repeat)
+    sample_df, parameters_sampled = format_sample(parameters_df, LH_sample, other_samples_to_repeat,
+                                                  include_seed=LHS_include_seed)
     focused_results_and_sample_df = run_samples_in_parrallell(sample_df, model_run_method, max_workers=max_workers)
     prccs = []
     for parameter in parameters_sampled:

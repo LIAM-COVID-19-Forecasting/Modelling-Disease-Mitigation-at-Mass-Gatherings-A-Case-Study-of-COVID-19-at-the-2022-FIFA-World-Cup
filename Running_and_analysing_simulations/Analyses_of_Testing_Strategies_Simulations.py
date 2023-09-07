@@ -29,7 +29,8 @@ if __name__ == '__main__':
         parameters_sampled = sample_df.columns.to_list()
         parameters_sampled.remove('Sample Number')
     else:
-        LHS_obj = qmc.LatinHypercube(len(parameters_df))
+        LHS_obj = qmc.LatinHypercube(len(parameters_df)+1) # the +1 is for generation of seed for multinomial seeding
+        # of infections. This ensures same seeding of infections in an LH sample.
         LH_sample = LHS_obj.random(sample_size)
         sample_df, parameters_sampled = format_sample(parameters_df, LH_sample, other_samples_to_repeat)
         sample_df.index.name = 'Sample Number'

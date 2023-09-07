@@ -437,6 +437,8 @@ class SportMatchMGESimulation:
                            }
 
         # Seeding infections
+        self.seeder.set_seed(int(sampled_parameters['seed'])) # takes seed from LH sample ensuring same results are
+        # obtained if LH sample is run.
         all_sub_pops = {**host_sub_population, **visitor_sub_pop}
         y0 = np.zeros(self.model.num_state)
         state_index = self.model.state_index

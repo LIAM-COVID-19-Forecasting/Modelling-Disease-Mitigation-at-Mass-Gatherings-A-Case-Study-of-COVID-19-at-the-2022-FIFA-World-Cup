@@ -23,7 +23,7 @@ if __name__ == '__main__':
     other_samples_to_repeat = None
     sample_size = 10000
     props_effectivly_vaccinated = [0.0, 0.25, 0.5, 0.75, 1.0]
-    save_dir = 'C:/Data/World Cup Modelling Test Changes'  #  directory for saving resuls into.
+    save_dir = 'C:/Data/World Cup Modelling'  #  directory for saving resuls into.
     save_dir = save_dir + '/Assesing vaccination with LH sample Size ' + str(sample_size)
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
@@ -33,7 +33,9 @@ if __name__ == '__main__':
         parameters_sampled = sample_df.columns.to_list()
         parameters_sampled.remove('Sample Number')
     else:
-        LHS_obj = qmc.LatinHypercube(len(parameters_df))
+        LHS_obj = qmc.LatinHypercube(len(parameters_df)+1) # the +1 is for generation of seed for multinomial seeding
+        # of infections. This ensures same seeding of infections in an LH sample.
+        # seeding of infections.
         LH_sample = LHS_obj.random(sample_size)
         sample_df, parameters_sampled = format_sample(parameters_df, LH_sample, other_samples_to_repeat)
         sample_df.index.name = 'Sample Number'

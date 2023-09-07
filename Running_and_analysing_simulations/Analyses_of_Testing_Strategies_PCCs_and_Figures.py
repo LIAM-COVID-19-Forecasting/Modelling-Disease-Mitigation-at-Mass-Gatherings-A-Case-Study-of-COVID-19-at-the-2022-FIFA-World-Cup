@@ -19,8 +19,8 @@ from tqdm import tqdm
 import string
 import scipy
 
-sample_size = 100
-data_dir = 'C:/Data/World Cup Modelling Test Changes' # Where the data from the simulations is held.
+sample_size = 10000
+data_dir = 'C:/Data/World Cup Modelling' # Where the data from the simulations is held.
 data_dir = data_dir + '/Assesing testing regimes with LH sample Size ' + str(sample_size)+'/'
 fig_dir = data_dir +'/Figures'
 if not os.path.exists(fig_dir):
