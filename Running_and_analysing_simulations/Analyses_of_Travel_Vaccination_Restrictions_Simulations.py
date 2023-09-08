@@ -47,18 +47,18 @@ if __name__ == '__main__':
                                       'Pre-match RTPCR': False,
                                       'Pre-travel RA': False,
                                       'Pre-match RA': False},
-                       'RTPCR then RA': {'Pre-travel RTPCR': True,
-                                         'Pre-match RTPCR': False,
-                                         'Pre-travel RA': False,
-                                         'Pre-match RA': True},
+                       'RTPCR then RA high': {'Pre-travel RTPCR': True,
+                                              'Pre-match RTPCR': False,
+                                              'Pre-travel RA': False,
+                                              'Pre-match RA': True},
                        'Pre-travel RTPCR':{'Pre-travel RTPCR': True,
                                            'Pre-match RTPCR': False,
                                            'Pre-travel RA': False,
                                            'Pre-match RA': False},
-                       'Pre-match RA': {'Pre-travel RTPCR': False,
-                                        'Pre-match RTPCR': False,
-                                        'Pre-travel RA': False,
-                                        'Pre-match RA': True}
+                       'Pre-match RA high': {'Pre-travel RTPCR': False,
+                                             'Pre-match RTPCR': False,
+                                             'Pre-travel RA': False,
+                                             'Pre-match RA': True}
                        }  # Information on testing regimes.
 
     for testing_regime, test_parmeters in testing_regimes.items():

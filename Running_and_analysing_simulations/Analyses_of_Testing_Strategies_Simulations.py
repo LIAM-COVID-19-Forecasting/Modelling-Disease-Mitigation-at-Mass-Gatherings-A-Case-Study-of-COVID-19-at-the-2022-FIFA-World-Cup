@@ -18,8 +18,8 @@ from simulation_classes.inernational_sports_match.sports_match_sim import SportM
 if __name__ == '__main__':
     parameters_df, fixed_parameters = load_parameters()
     other_samples_to_repeat = None
-    sample_size = 100
-    save_dir = 'C:/Data/World Cup Modelling Test Changes' #  directory for saving resuls into.
+    sample_size = 10000
+    save_dir = 'C:/Data/World Cup Modelling' #  directory for saving resuls into.
     save_dir = save_dir + '/Assesing testing regimes with LH sample Size ' + str(sample_size)
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
@@ -130,6 +130,7 @@ if __name__ == '__main__':
                 samples_already_run.append(sample_num)
 
         samples_not_run_df = sample_df[~sample_df['Sample Number'].isin(samples_already_run)]
+
 
         if len(samples_not_run_df)>0:
             run_samples_in_parrallell(samples_not_run_df, model_run_method,
