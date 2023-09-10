@@ -124,7 +124,7 @@ fig = sns.catplot(data=test_PCC, height=7, aspect=0.9,
                   hue='Test Regime', hue_order=actual_testing_regimes, palette=palette_dict,
                   x="r", y="Output", width=0.75, order=outputs, kind='bar'
                   )
-fig.ax.set_xlim(-0.25,0.25)
+fig.ax.set_xlim(-0.25,0.05)
 fig.ax.set(xlabel='Partial Rank Correlation Coefficient')
 fig.set_yticklabels(output_labels)
 
@@ -137,7 +137,7 @@ fig = sns.catplot(data=test_PCC, height=7, aspect=0.9,
                   hue='Test Regime', hue_order=actual_testing_regimes, palette=palette_dict,
                   x="r", y="Output", width=0.75, order=just_totals_outputs, kind='bar'
                   )
-fig.ax.set_xlim(-0.25,0.25)
+fig.ax.set_xlim(-0.25,0.05)
 fig.ax.set(xlabel='Partial Rank Correlation Coefficient')
 fig.set_yticklabels(just_totals_output_labels)
 
@@ -223,7 +223,7 @@ for name, params_or_vars in orders.items():
         ax.set_title(alphabet[index] + ': ' + outputs[index].title())
     handles, labels = ax.get_legend_handles_labels() # needed for legend of a later figure.
     fig.set_yticklabels(paramater_legends[name].keys())
-    plt.tight_layout(rect=(0,0,0.89,1))
+    plt.tight_layout(rect=(0,0,0.875,1))
     plt.savefig(fig_dir+'PRCCs '+ name +' on outputs.png')
 
 #%%
@@ -244,7 +244,7 @@ for index, ax in enumerate(fig.axes):
     ax.set_title(alphabet[index] + ': ' + just_totals_outputs[index].title())
 handles, labels = ax.get_legend_handles_labels() # needed for legend of a later figure.
 fig.set_yticklabels(params_related_to_npis_legend)
-plt.tight_layout(rect=(0, 0, 0.89, 1))
+plt.tight_layout(rect=(0, 0, 0.875, 1))
 plt.savefig(fig_dir+'PRCCs params related to npis on Totals.png')
 
 
@@ -293,7 +293,21 @@ relative_diffs = relative_diffs.reset_index()
 relative_diffs.rename(columns={'level_2':'Testing Regime'}, inplace=True)
 
 plt.figure()
-fig = sns.catplot(data=relative_diffs,
+pre_travel_regimes = ['Pre-travel RTPCR', 'Pre-travel RA low', 'Pre-travel RA mid', 'Pre-travel RA high']
+fig = sns.catplot(data=relative_diffs[relative_diffs['Testing Regime'].isin(pre_travel_regimes)],
+                  height=3.5, aspect=2,
+                  x='people', y='Testing Regime', margin_titles=False,
+                  col='Output', col_order=outputs, col_wrap=2,
+                  sharex=False, palette=palette_dict, kind="box", showmeans=True, meanprops=box_plot_mean_marker)
+axes = fig.axes
+for index, ax in enumerate(axes):
+    ax.set(xlabel = '% Difference in ' + outputs[index].title())
+fig.set_titles(col_template="", row_template="")
+plt.tight_layout()
+plt.savefig(fig_dir+'Relative Difference Boxplots Testing regimes vs No Testing v1.png')
+
+plt.figure()
+fig = sns.catplot(data=relative_diffs[~relative_diffs['Testing Regime'].isin(pre_travel_regimes)],
                   height=7, aspect=0.9,
                   x='people', y='Testing Regime', margin_titles=False,
                   col='Output', col_order=outputs, col_wrap=2,
@@ -303,7 +317,7 @@ for index, ax in enumerate(axes):
     ax.set(xlabel = '% Difference in ' + outputs[index].title())
 fig.set_titles(col_template="", row_template="")
 plt.tight_layout()
-plt.savefig(fig_dir+'Relative Difference Boxplots Testing regimes vs No Testing.png')
+plt.savefig(fig_dir+'Relative Difference Boxplots Testing regimes vs No Testing v2.png')
 
 plt.figure()
 control_df = results_reshaped[results_reshaped['Testing Regime'] == 'No Testing']
@@ -320,8 +334,8 @@ plt.tight_layout()
 plt.savefig(fig_dir+'Control Relative Difference Boxplots Testing regimes vs No Testing.png')
 
 plt.figure()
-fig = sns.catplot(data=relative_diffs,
-                  height=7, aspect=0.9,
+fig = sns.catplot(data=relative_diffs[relative_diffs['Testing Regime'].isin(pre_travel_regimes)],
+                  height=2, aspect=3,
                   x='people', y='Testing Regime', margin_titles=False,
                   col='Output', col_order=just_totals_outputs, col_wrap=2,
                   sharex=False, palette=palette_dict, kind="box", showmeans=True, meanprops=box_plot_mean_marker)
@@ -332,7 +346,23 @@ fig.set_titles(col_template="", row_template="")
 plt.tight_layout()
 plt.figtext(0.025, 0.05, s='B:', fontdict={'fontsize':'xx-large',
                                            'fontweight':'bold'})
-plt.savefig(fig_dir+'Relative Difference Boxplots Testing regimes vs No Testing (Totals).png')
+plt.savefig(fig_dir+'Relative Difference Boxplots Testing regimes vs No Testing (Totals) v1.png')
+
+plt.figure()
+fig = sns.catplot(data=relative_diffs[~relative_diffs['Testing Regime'].isin(pre_travel_regimes)],
+                  height=7, aspect=0.9,
+                  x='people', y='Testing Regime', margin_titles=False,
+                  col='Output', col_order=just_totals_outputs, col_wrap=2,
+                  sharex=False, palette=palette_dict, kind="box", showmeans=True, meanprops=box_plot_mean_marker)
+axes = fig.axes
+for index, ax in enumerate(axes):
+    ax.set(xlabel = '% Difference in ' + just_totals_outputs[index].title())
+fig.set_titles(col_template="", row_template="")
+plt.tight_layout()
+plt.figtext(0.025, 0.05, s='C:', fontdict={'fontsize':'xx-large',
+                                           'fontweight':'bold'})
+plt.savefig(fig_dir+'Relative Difference Boxplots Testing regimes vs No Testing (Totals) v2.png')
+
 plt.figure()
 fig = sns.catplot(data=control_df ,
                   height=1.5, aspect=1.9,
@@ -401,7 +431,11 @@ desired_columns = ['Test Regime',
                    'Output', 'Differences in PCC',
                    'z-score', 'p_value (one tailed)', 'p_value (two tailed)']
 sig_diffs_df = sig_diffs_df[desired_columns]
-sig_diffs_df.to_csv(fig_dir+'Comparison of props vaccinated and testing regimes.csv',
-                    index=False)
+sig_diffs_df_va = sig_diffs_df[sig_diffs_df['Proportion Effectively Vaccinated'] == 'v_A'].drop(columns='Proportion Effectively Vaccinated')
+sig_diffs_df_va.to_csv(fig_dir+'PCC Comparison of props Team A supporters vaccinated and testing regimes.csv',
+                       index=False)
+sig_diffs_df_vb = sig_diffs_df[sig_diffs_df['Proportion Effectively Vaccinated'] == 'v_B'].drop(columns='Proportion Effectively Vaccinated')
+sig_diffs_df_vb.to_csv(fig_dir+'PCC Comparison of props Team B supporters vaccinated and testing regimes.csv',
+                       index=False)
 
 

@@ -38,20 +38,36 @@ LH_sample = pd.read_csv(data_dir+'LH sample.csv')
 parameters_sampled = LH_sample.columns.to_list()
 parameters_sampled.remove('Sample Number')
 testing_regimes = ['Pre-travel RTPCR',
-                   'Pre-travel RA',
+                   'Pre-travel RA low',
+                   'Pre-travel RA mid',
+                   'Pre-travel RA high',
                    'Pre-match RTPCR',
-                   'Pre-match RA',
+                   'Pre-match RA low',
+                   'Pre-match RA mid',
+                   'Pre-match RA high',
                    'Double RTPCR',
-                   'Double RA',
-                   'RTPCR then RA',
-                   'RA then RTPCR',
+                   'Double RA low',
+                   'Double RA mid',
+                   'Double RA high',
+                   'RTPCR then RA low',
+                   'RTPCR then RA mid',
+                   'RTPCR then RA high',
+                   'RA low then RTPCR',
+                   'RA mid then RTPCR',
+                   'RA high then RTPCR',
                    'No Testing'
                    ]
-palette = sns.color_palette()
+
+palette = sns.color_palette(palette='tab20', n_colors=len(testing_regimes))
 palette_dict = {testing_regime:palette[index] for index, testing_regime in enumerate(testing_regimes)}
 testing_regimes = ['Pre-travel RTPCR',
-                   'Pre-match RA',
-                   'RTPCR then RA',
+                   'Pre-match RTPCR',
+                   'Pre-match RA low',
+                   'Pre-match RA mid',
+                   'Pre-match RA high',
+                   'RTPCR then RA low',
+                   'RTPCR then RA mid',
+                   'RTPCR then RA high',
                    'No Testing'
                    ]
 testing_regimes_labels = [testing_regime.replace(' ', '\n') for testing_regime in testing_regimes]
@@ -76,13 +92,14 @@ else:
     for testing_regime in tqdm(testing_regimes, desc='loading data from testing regime'):
         regime_data_dir = data_dir + testing_regime + '/'
         for prop_effectivly_vaccinated in props_effectivly_vaccinated:
-            prop_vaccinated_save_dir = (regime_data_dir + 'Prop Effectively vaccinated '
-                                        + str(prop_effectivly_vaccinated)+ '/')
-            csvs = [prop_vaccinated_save_dir+'Focused Outputs and Sample ' + str(index)+ '.csv' for index in range(sample_size)]
-            df = pd.concat(map(pd.read_csv, csvs), ignore_index=True)
-            df['Testing Regime'] = testing_regime
-            df['Prop_Effec_Vaccinated'] = prop_effectivly_vaccinated
-            results_df.append(df)
+            if not (prop_effectivly_vaccinated == 1.0 and testing_regime != 'No Testing'):
+                prop_vaccinated_save_dir = (regime_data_dir + 'Prop Effectively vaccinated '
+                                            + str(prop_effectivly_vaccinated)+ '/')
+                csvs = [prop_vaccinated_save_dir+'Focused Outputs and Sample ' + str(index)+ '.csv' for index in range(sample_size)]
+                df = pd.concat(map(pd.read_csv, csvs), ignore_index=True)
+                df['Testing Regime'] = testing_regime
+                df['Prop_Effec_Vaccinated'] = prop_effectivly_vaccinated
+                results_df.append(df)
 
     results_df = pd.concat(results_df)
     results_df.to_csv(results_file, index=False)
@@ -162,6 +179,7 @@ plt.savefig(fig_dir+'Control of Relative Diff Boxplots testing regimes and props
 #%%
 # plotting just Total Infections and Hospitalisations
 
+
 plt.figure()
 plotting_df = relative_diffs[relative_diffs['Proportion Effectively Vaccinated'].isin(['0.0','0.25'])]
 figB = sns.catplot(data=plotting_df,
@@ -175,8 +193,8 @@ axes = figB.axes
 for index, ax in enumerate(axes):
     ax.set(xlabel = '% Difference in ' + just_totals_outputs[index].title())
 figB.set_titles(col_template="", row_template="")
-plt.figtext(0.025, 0.05, s='B:', fontdict={'fontsize':'xx-large',
-                                           'fontweight':'bold'})
+# plt.figtext(0.025, 0.05, s='B:', fontdict={'fontsize':'xx-large',
+#                                            'fontweight':'bold'})
 plt.savefig(fig_dir+'Relative Diff Boxplots testing regimes and props vaccinated (Totals) 1.png')
 # plt.show()
 plt.figure()
@@ -192,14 +210,14 @@ axes = figC.axes
 for index, ax in enumerate(axes):
     ax.set(xlabel = '% Difference in ' + just_totals_outputs[index].title())
 figC.set_titles(col_template="", row_template="")
-plt.figtext(0.025, 0.05, s='C:', fontdict={'fontsize':'xx-large',
+plt.figtext(0.025, 0.05, s='B:', fontdict={'fontsize':'xx-large',
                                            'fontweight':'bold'})
 plt.savefig(fig_dir+'Relative Diff Boxplots testing regimes and props vaccinated (Totals) 2.png')
 # plt.show()
 
 plt.figure()
 figA = sns.catplot(data=control_results,
-                   height=1.5, aspect=1.9,
+                   height=2, aspect=2,
                    x='people',
                    margin_titles=False, color=palette_dict['No Testing'],
                    col='Output', col_order=just_totals_outputs, col_wrap=2,
@@ -207,8 +225,9 @@ figA = sns.catplot(data=control_results,
 axes = figA.axes
 for index, ax in enumerate(axes):
     ax.set(xlabel = outputs[index].title())
+    # ax.ticklabel_format(axis='x', style='scientific', scilimits=(0, 0))
 figA.set_titles(col_template="", row_template="")
-plt.figtext(0.01, 0.01, s='A:', fontdict={'fontsize':'small',
+plt.figtext(0.01, 0.01, s='A:', fontdict={'fontsize':'x-large',
                                           'fontweight':'bold'})
 legend_info = figC.axes[0].get_legend_handles_labels()
 plt.legend(*figC.axes[0].get_legend_handles_labels(), loc= (0.8,0.85))

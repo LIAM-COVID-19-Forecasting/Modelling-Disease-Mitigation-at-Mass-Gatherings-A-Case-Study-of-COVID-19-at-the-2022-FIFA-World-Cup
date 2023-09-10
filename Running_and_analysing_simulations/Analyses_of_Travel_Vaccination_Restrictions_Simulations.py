@@ -47,18 +47,38 @@ if __name__ == '__main__':
                                       'Pre-match RTPCR': False,
                                       'Pre-travel RA': False,
                                       'Pre-match RA': False},
-                       'RTPCR then RA high': {'Pre-travel RTPCR': True,
-                                              'Pre-match RTPCR': False,
-                                              'Pre-travel RA': False,
-                                              'Pre-match RA': 'high'},
-                       'Pre-travel RTPCR':{'Pre-travel RTPCR': True,
-                                           'Pre-match RTPCR': False,
+                       'Pre-travel RTPCR': {'Pre-travel RTPCR': True,
+                                            'Pre-match RTPCR': False,
+                                            'Pre-travel RA': False,
+                                            'Pre-match RA': False},
+                       'Pre-match RTPCR': {'Pre-travel RTPCR': False,
+                                           'Pre-match RTPCR': True,
                                            'Pre-travel RA': False,
                                            'Pre-match RA': False},
+                       'Pre-match RA low': {'Pre-travel RTPCR': False,
+                                            'Pre-match RTPCR': False,
+                                            'Pre-travel RA': False,
+                                            'Pre-match RA': 'low'},
+                       'Pre-match RA mid': {'Pre-travel RTPCR': False,
+                                            'Pre-match RTPCR': False,
+                                            'Pre-travel RA': False,
+                                            'Pre-match RA': 'mid'},
                        'Pre-match RA high': {'Pre-travel RTPCR': False,
                                              'Pre-match RTPCR': False,
                                              'Pre-travel RA': False,
-                                             'Pre-match RA': 'high'}
+                                             'Pre-match RA': 'high'},
+                       'RTPCR then RA low': {'Pre-travel RTPCR': True,
+                                             'Pre-match RTPCR': False,
+                                             'Pre-travel RA': False,
+                                             'Pre-match RA': 'low'},
+                       'RTPCR then RA mid': {'Pre-travel RTPCR': True,
+                                             'Pre-match RTPCR': False,
+                                             'Pre-travel RA': False,
+                                             'Pre-match RA': 'mid'},
+                       'RTPCR then RA high': {'Pre-travel RTPCR': True,
+                                              'Pre-match RTPCR': False,
+                                              'Pre-travel RA': False,
+                                              'Pre-match RA': 'high'}
                        }  # Information on testing regimes.
 
     for testing_regime, test_parmeters in testing_regimes.items():
@@ -66,22 +86,23 @@ if __name__ == '__main__':
         if not os.path.exists(regime_save_dir):
             os.makedirs(regime_save_dir)
         for prop_effectivly_vaccinated in props_effectivly_vaccinated:
-            prop_vaccinated_save_dir = regime_save_dir + '/Prop Effectively vaccinated ' + str(prop_effectivly_vaccinated)
-            if not os.path.exists(prop_vaccinated_save_dir):
-                os.makedirs(prop_vaccinated_save_dir)
-            fixed_parameters.update(test_parmeters)
-            fixed_parameters.update({'v_A': prop_effectivly_vaccinated,
-                                     'v_B': prop_effectivly_vaccinated})
-            model_or_simulation_obj = SportMatchMGESimulation(fixed_parameters=fixed_parameters)
-            model_run_method = model_or_simulation_obj.run_simulation
-            samples_already_run = []
-            for sample_num in range(len(sample_df)):
-                focused_output_file = prop_vaccinated_save_dir +'/Focused Outputs and Sample ' + str(sample_num)+ '.csv'
-                if os.path.isfile(focused_output_file):
-                    samples_already_run.append(sample_num)
+            if not (prop_effectivly_vaccinated == 1.0 and testing_regime != 'No Testing'):
+                prop_vaccinated_save_dir = regime_save_dir + '/Prop Effectively vaccinated ' + str(prop_effectivly_vaccinated)
+                if not os.path.exists(prop_vaccinated_save_dir):
+                    os.makedirs(prop_vaccinated_save_dir)
+                fixed_parameters.update(test_parmeters)
+                fixed_parameters.update({'v_A': prop_effectivly_vaccinated,
+                                         'v_B': prop_effectivly_vaccinated})
+                model_or_simulation_obj = SportMatchMGESimulation(fixed_parameters=fixed_parameters)
+                model_run_method = model_or_simulation_obj.run_simulation
+                samples_already_run = []
+                for sample_num in range(len(sample_df)):
+                    focused_output_file = prop_vaccinated_save_dir +'/Focused Outputs and Sample ' + str(sample_num)+ '.csv'
+                    if os.path.isfile(focused_output_file):
+                        samples_already_run.append(sample_num)
 
-            samples_not_run_df = sample_df[~sample_df['Sample Number'].isin(samples_already_run)]
+                samples_not_run_df = sample_df[~sample_df['Sample Number'].isin(samples_already_run)]
 
-            if len(samples_not_run_df) > 0:
-                run_samples_in_parrallell(samples_not_run_df, model_run_method, max_workers=max_workers,
-                                          save_dir=prop_vaccinated_save_dir, return_full_results=True)
+                if len(samples_not_run_df) > 0:
+                    run_samples_in_parrallell(samples_not_run_df, model_run_method, max_workers=max_workers,
+                                              save_dir=prop_vaccinated_save_dir, return_full_results=True)
