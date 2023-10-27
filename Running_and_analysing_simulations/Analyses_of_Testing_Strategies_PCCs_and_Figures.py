@@ -20,9 +20,9 @@ import string
 import scipy
 
 sample_size = 10000
-data_dir = 'C:/Data/World Cup Modelling' # Where the data from the simulations is held.
+data_dir = 'E:/World Cup Modelling'  #  directory for saving results into.
 data_dir = data_dir + '/Assesing testing regimes with LH sample Size ' + str(sample_size)+'/'
-fig_dir = data_dir +'/Figures'
+fig_dir = data_dir +'Figures'
 if not os.path.exists(fig_dir):
     os.mkdir(fig_dir)
 fig_dir = fig_dir +'/'
@@ -44,21 +44,16 @@ parameters_sampled.remove('Sample Number')
 testing_regimes = ['Pre-travel RTPCR',
                    'Pre-travel RA low',
                    'Pre-travel RA mid',
-                   'Pre-travel RA high',
                    'Pre-match RTPCR',
                    'Pre-match RA low',
                    'Pre-match RA mid',
-                   'Pre-match RA high',
                    'Double RTPCR',
                    'Double RA low',
                    'Double RA mid',
-                   'Double RA high',
                    'RTPCR then RA low',
                    'RTPCR then RA mid',
-                   'RTPCR then RA high',
                    'RA low then RTPCR',
                    'RA mid then RTPCR',
-                   'RA high then RTPCR',
                    'No Testing'
                    ]
 testing_regimes_labels = [testing_regime.replace(' ', '\n') for testing_regime in testing_regimes]
@@ -66,8 +61,23 @@ actual_testing_regimes = copy.deepcopy(testing_regimes)
 actual_testing_regimes.remove('No Testing')
 actual_testing_regimes_labels = [testing_regime.replace(' ', '\n') for testing_regime in actual_testing_regimes]
 sns.set_style("darkgrid", {"grid.color": ".6", "grid.linestyle": ":"})
-palette = sns.color_palette(palette='tab20', n_colors=len(testing_regimes))
-palette_dict = {testing_regime:palette[index] for index, testing_regime in enumerate(testing_regimes)}
+palette_tab20b = sns.color_palette(palette='tab20b', n_colors=20)
+palette_tab20 = sns.color_palette(palette='tab20', n_colors=20)
+palette_set1 = sns.color_palette(palette='Set1', n_colors=9)
+palette_dict = {'Pre-travel RTPCR': palette_tab20b[12],
+                'Pre-travel RA low': palette_tab20b[15],
+                'Pre-travel RA mid': palette_tab20b[14],
+                'Pre-match RTPCR': palette_tab20b[0],
+                'Pre-match RA low': palette_tab20b[3],
+                'Pre-match RA mid': palette_tab20b[2],
+                'Double RTPCR': palette_tab20b[4],
+                'Double RA low': palette_tab20b[7],
+                'Double RA mid': palette_tab20b[6],
+                'RTPCR then RA low': palette_tab20[3],
+                'RTPCR then RA mid': palette_tab20[2],
+                'RA low then RTPCR': palette_tab20b[19],
+                'RA mid then RTPCR': palette_tab20b[18],
+                'No Testing': palette_set1[0]}
 alphabet = list(string.ascii_lowercase) # for assigning leters to sub figures.
 box_plot_mean_marker = {"marker":"o",
                         "markerfacecolor":"white",
@@ -142,7 +152,7 @@ fig.ax.set(xlabel='Partial Rank Correlation Coefficient')
 fig.set_yticklabels(just_totals_output_labels)
 
 plt.tight_layout(rect=(0,0,0.8,1))
-plt.savefig(fig_dir + 'Test Regime PCCs against no testing (Totals).png')
+plt.savefig(fig_dir + 'Test Regime PCCs against no testing (Totals).eps')
 
 
 #%%
@@ -245,7 +255,7 @@ for index, ax in enumerate(fig.axes):
 handles, labels = ax.get_legend_handles_labels() # needed for legend of a later figure.
 fig.set_yticklabels(params_related_to_npis_legend)
 plt.tight_layout(rect=(0, 0, 0.875, 1))
-plt.savefig(fig_dir+'PRCCs params related to npis on Totals.png')
+plt.savefig(fig_dir+'PRCCs params related to npis on Totals.eps')
 
 
 #%%
@@ -344,9 +354,7 @@ for index, ax in enumerate(axes):
     ax.set(xlabel = '% Difference in ' + just_totals_outputs[index].title())
 fig.set_titles(col_template="", row_template="")
 plt.tight_layout()
-plt.figtext(0.025, 0.05, s='B:', fontdict={'fontsize':'xx-large',
-                                           'fontweight':'bold'})
-plt.savefig(fig_dir+'Relative Difference Boxplots Testing regimes vs No Testing (Totals) v1.png')
+plt.savefig(fig_dir+'Rel Diff Bxplts Testing regimes vs No Testing (Totals) v1.eps')
 
 plt.figure()
 fig = sns.catplot(data=relative_diffs[~relative_diffs['Testing Regime'].isin(pre_travel_regimes)],
@@ -359,9 +367,9 @@ for index, ax in enumerate(axes):
     ax.set(xlabel = '% Difference in ' + just_totals_outputs[index].title())
 fig.set_titles(col_template="", row_template="")
 plt.tight_layout()
-plt.figtext(0.025, 0.05, s='C:', fontdict={'fontsize':'xx-large',
+plt.figtext(0.025, 0.05, s='B:', fontdict={'fontsize':'xx-large',
                                            'fontweight':'bold'})
-plt.savefig(fig_dir+'Relative Difference Boxplots Testing regimes vs No Testing (Totals) v2.png')
+plt.savefig(fig_dir+'Rel Diff Bxplts Testing regimes vs No Testing (Totals) v2.eps')
 
 plt.figure()
 fig = sns.catplot(data=control_df ,
@@ -376,7 +384,7 @@ fig.set_titles(col_template="", row_template="")
 plt.tight_layout()
 plt.figtext(0.01, 0.01, s='A:', fontdict={'fontsize':'small',
                                           'fontweight':'bold'})
-plt.savefig(fig_dir+'Control Relative Difference Boxplots Testing regimes vs No Testing (Totals).png')
+plt.savefig(fig_dir+'Ctrl Rel Diff Bxplts Testing reg vs No Testing (Totals).eps')
 
 
 
@@ -432,10 +440,10 @@ desired_columns = ['Test Regime',
                    'z-score', 'p_value (one tailed)', 'p_value (two tailed)']
 sig_diffs_df = sig_diffs_df[desired_columns]
 sig_diffs_df_va = sig_diffs_df[sig_diffs_df['Proportion Effectively Vaccinated'] == 'v_A'].drop(columns='Proportion Effectively Vaccinated')
-sig_diffs_df_va.to_csv(fig_dir+'PCC Comparison of props Team A supporters vaccinated and testing regimes.csv',
+sig_diffs_df_va.to_csv(fig_dir+'S1 Table Differences in PCCs between proportions of Team A visitor effectively vaccinated and different testing regimes.csv',
                        index=False)
 sig_diffs_df_vb = sig_diffs_df[sig_diffs_df['Proportion Effectively Vaccinated'] == 'v_B'].drop(columns='Proportion Effectively Vaccinated')
-sig_diffs_df_vb.to_csv(fig_dir+'PCC Comparison of props Team B supporters vaccinated and testing regimes.csv',
+sig_diffs_df_vb.to_csv(fig_dir+'S2 Table Differences in PCCs between proportions of Team B visitor effectively vaccinated and different testing regimes.csv',
                        index=False)
 
 

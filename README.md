@@ -43,13 +43,17 @@ events. The sub-directory international_sport_match simulate the model and event
 
 ### Running_and_analysing_simulations
 - Analyses_of_Testing_Strategies_Simulations.py : runs simulations outlined in
-  this section of manuscript.
-- Analyses_of_Testing_Strategies_Figures.py : Performs
-  PCC analyses and produces figures from the results of simulations.
-- Analyses_of_Travel_Vaccination_Restrictions_Simulations.py : runs simulations outlined in
-  this section of manuscript.
+  this section of manuscript. Note new users may need to alter the line "save_dir = 'E:/Data/World Cup Modelling'  #
+  directory for saving results into." 
+- Analyses_of_Testing_Strategies_PCCs_and_Figures.py : Performs PCC analyses and produces figures from the results of
+  simulations. Note new users may need to alter the line "save_dir = 'E:/Data/World Cup Modelling'  #
+  directory for saving results into." 
+- Analyses_of_Travel_Vaccination_Restrictions_Simulations.py : runs simulations outlined in this section of manuscript. 
+  Note new users may need to alter the line "save_dir = 'E:/Data/World Cup Modelling'  #
+  directory for saving results into." 
 - Analyses_of_Travel_Vaccination_Restrictions_Figures.py : Produces figures from the results of these simulations.
-- parameters : Parameters used in simulations.
+- parameters : Parameters used in simulations. Note new users may need to alter the line "save_dir = 'E:/Data/World Cup 
+  Modelling'  # directory for saving results into." 
   - 'Parameters values in LHS Sports Match Sims.xlsx' contains parameters used in simulations.
   - Subdirectory data_extraction contains code and files for obtaining prevalence data for
     countries in FIFA 2022 world cup.

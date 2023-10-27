@@ -15,7 +15,9 @@ def load_parameters(file='Parameters values in LHS Sports Match Sims.xlsx',
     fixed_params = parameters_df['Fixed Value'].dropna()
     fixed_params = fixed_params.to_dict()
     parameters_df = parameters_df[parameters_df['Fixed Value'].isnull()]
-    # no waning immunity or flows of people between clusters and vaccination groups.
+    # No waning immunity or flows of people between clusters and vaccination groups
+    # during international spots matches. This is due to the simulation time of such
+    # matches being short in comparison.
     parameters_held_at_0 = {param: 0
                             for param in
                             ['alpha', 'iota_{RA}', 'iota_{RTPCR}', 'nu_e', 'nu_b', 'nu_w']}

@@ -10,6 +10,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import datetime as dt
 from dateutil.relativedelta import relativedelta
+from PIL import Image # For conversion of eps files to tiff for publication.
+import os
 
 #%% Load Qatari government data
 url_qatari_gov= "https://www.data.gov.qa/api/explore/v2.1/catalog/datasets/covid-19-cases-in-qatar/exports/csv?lang=en&timezone=America%2FNew_York&use_labels=true&csv_separator=%3B"
@@ -101,4 +103,5 @@ fig.refline(x = quater_finals_begin,
 fig.axes[0,0].set_ylabel('New Cases Smoothed')
 fig.axes[1,0].set_ylabel('Total in Hospital')
 plt.tight_layout()
-plt.savefig('Covid cases around world.png')
+plt.savefig('Covid cases around world.eps')
+

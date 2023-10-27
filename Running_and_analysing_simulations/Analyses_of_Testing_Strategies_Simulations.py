@@ -19,7 +19,7 @@ if __name__ == '__main__':
     parameters_df, fixed_parameters = load_parameters()
     other_samples_to_repeat = None
     sample_size = 10000
-    save_dir = 'C:/Data/World Cup Modelling' #  directory for saving resuls into.
+    save_dir = 'E:/World Cup Modelling' #  directory for saving results into.
     save_dir = save_dir + '/Assesing testing regimes with LH sample Size ' + str(sample_size)
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
@@ -58,10 +58,6 @@ if __name__ == '__main__':
                                              'Pre-match RTPCR': False,
                                              'Pre-travel RA': 'mid',
                                              'Pre-match RA': False},
-                       'Pre-travel RA high': {'Pre-travel RTPCR': False,
-                                              'Pre-match RTPCR': False,
-                                              'Pre-travel RA': 'high',
-                                              'Pre-match RA': False},
                        'Pre-match RA low': {'Pre-travel RTPCR': False,
                                             'Pre-match RTPCR': False,
                                             'Pre-travel RA': False,
@@ -70,10 +66,6 @@ if __name__ == '__main__':
                                             'Pre-match RTPCR': False,
                                             'Pre-travel RA': False,
                                             'Pre-match RA': 'mid'},
-                       'Pre-match RA high': {'Pre-travel RTPCR': False,
-                                             'Pre-match RTPCR': False,
-                                             'Pre-travel RA': False,
-                                             'Pre-match RA': 'high'},
                        'Double RTPCR': {'Pre-travel RTPCR': True,
                                         'Pre-match RTPCR': True,
                                         'Pre-travel RA': False,
@@ -86,10 +78,6 @@ if __name__ == '__main__':
                                          'Pre-match RTPCR': False,
                                          'Pre-travel RA': 'mid',
                                          'Pre-match RA': 'mid'},
-                       'Double RA high': {'Pre-travel RTPCR': False,
-                                          'Pre-match RTPCR': False,
-                                          'Pre-travel RA': 'high',
-                                          'Pre-match RA': 'high'},
                        'RTPCR then RA low': {'Pre-travel RTPCR': True,
                                              'Pre-match RTPCR': False,
                                              'Pre-travel RA': False,
@@ -98,10 +86,6 @@ if __name__ == '__main__':
                                              'Pre-match RTPCR': False,
                                              'Pre-travel RA': False,
                                              'Pre-match RA': 'mid'},
-                       'RTPCR then RA high': {'Pre-travel RTPCR': True,
-                                              'Pre-match RTPCR': False,
-                                              'Pre-travel RA': False,
-                                              'Pre-match RA': 'high'},
                        'RA low then RTPCR': {'Pre-travel RTPCR': False,
                                              'Pre-match RTPCR': True,
                                              'Pre-travel RA': 'low',
@@ -109,11 +93,7 @@ if __name__ == '__main__':
                        'RA mid then RTPCR': {'Pre-travel RTPCR': False,
                                              'Pre-match RTPCR': True,
                                              'Pre-travel RA': 'mid',
-                                             'Pre-match RA': False},
-                       'RA high then RTPCR': {'Pre-travel RTPCR': False,
-                                              'Pre-match RTPCR': True,
-                                              'Pre-travel RA': 'high',
-                                              'Pre-match RA': False}
+                                             'Pre-match RA': False}
                        }  # Information on testing regimes.
 
     for testing_regime, test_parmeters in testing_regimes.items():

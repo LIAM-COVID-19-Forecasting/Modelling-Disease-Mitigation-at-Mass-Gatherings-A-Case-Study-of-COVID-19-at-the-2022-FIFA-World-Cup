@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 sample_size = 10000
-data_dir = 'C:/Data/World Cup Modelling'
+data_dir = 'E:/World Cup Modelling'  #  directory for saving results into.
 data_dir = data_dir + '/Assesing vaccination with LH sample Size ' + str(sample_size)+'/'
 fig_dir = data_dir +'/Figures'
 if not os.path.exists(fig_dir):
@@ -37,37 +37,29 @@ just_totals_output_labels = output_labels[0:2]
 LH_sample = pd.read_csv(data_dir+'LH sample.csv')
 parameters_sampled = LH_sample.columns.to_list()
 parameters_sampled.remove('Sample Number')
-testing_regimes = ['Pre-travel RTPCR',
-                   'Pre-travel RA low',
-                   'Pre-travel RA mid',
-                   'Pre-travel RA high',
-                   'Pre-match RTPCR',
-                   'Pre-match RA low',
-                   'Pre-match RA mid',
-                   'Pre-match RA high',
-                   'Double RTPCR',
-                   'Double RA low',
-                   'Double RA mid',
-                   'Double RA high',
-                   'RTPCR then RA low',
-                   'RTPCR then RA mid',
-                   'RTPCR then RA high',
-                   'RA low then RTPCR',
-                   'RA mid then RTPCR',
-                   'RA high then RTPCR',
-                   'No Testing'
-                   ]
-
-palette = sns.color_palette(palette='tab20', n_colors=len(testing_regimes))
-palette_dict = {testing_regime:palette[index] for index, testing_regime in enumerate(testing_regimes)}
+palette_tab20b = sns.color_palette(palette='tab20b', n_colors=20)
+palette_tab20 = sns.color_palette(palette='tab20', n_colors=20)
+palette_set1 = sns.color_palette(palette='Set1', n_colors=9)
+palette_dict = {'Pre-travel RTPCR': palette_tab20b[12],
+                'Pre-travel RA low': palette_tab20b[15],
+                'Pre-travel RA mid': palette_tab20b[14],
+                'Pre-match RTPCR': palette_tab20b[0],
+                'Pre-match RA low': palette_tab20b[3],
+                'Pre-match RA mid': palette_tab20b[2],
+                'Double RTPCR': palette_tab20b[4],
+                'Double RA low': palette_tab20b[7],
+                'Double RA mid': palette_tab20b[6],
+                'RTPCR then RA low': palette_tab20[3],
+                'RTPCR then RA mid': palette_tab20[2],
+                'RA low then RTPCR': palette_tab20b[19],
+                'RA mid then RTPCR': palette_tab20b[18],
+                'No Testing': palette_set1[0]}
 testing_regimes = ['Pre-travel RTPCR',
                    'Pre-match RTPCR',
                    'Pre-match RA low',
                    'Pre-match RA mid',
-                   'Pre-match RA high',
                    'RTPCR then RA low',
                    'RTPCR then RA mid',
-                   'RTPCR then RA high',
                    'No Testing'
                    ]
 testing_regimes_labels = [testing_regime.replace(' ', '\n') for testing_regime in testing_regimes]
@@ -158,7 +150,7 @@ for index, ax in enumerate(axes):
     ax.set(xlabel = '% Difference in ' + outputs[index].title())
 figC.set_titles(col_template="", row_template="")
 sns.move_legend(figC, "upper left", bbox_to_anchor=(0.875, 0.55))
-plt.savefig(fig_dir+'Relative Diff Boxplots testing regimes and props vaccinated.png')
+plt.savefig(fig_dir+'Rel Diff Bxplts testing regimes and props vaccinated.eps')
 
 # Plotting control figure
 control_results = results_reshaped[(results_reshaped.Prop_Effec_Vaccinated=='1.0') &
@@ -174,46 +166,57 @@ axes = figC.axes
 for index, ax in enumerate(axes):
     ax.set(xlabel = outputs[index].title())
 figC.set_titles(col_template="", row_template="")
-plt.savefig(fig_dir+'Control of Relative Diff Boxplots testing regimes and props vaccinated.png')
+plt.savefig(fig_dir+'Ctrl of Rel Diff Bxplts testing regimes and props vacc.eps')
 
-#%%
-# plotting just Total Infections and Hospitalisations
 
+
+#%%%
 
 plt.figure()
-plotting_df = relative_diffs[relative_diffs['Proportion Effectively Vaccinated'].isin(['0.0','0.25'])]
-figB = sns.catplot(data=plotting_df,
-                   height=3, aspect=1.8,
-                   x='people', y='Proportion Effectively Vaccinated',
+sns.set_style('darkgrid', {'legend.frameon':True})
+plt.legend(facecolor='white', framealpha=1)
+figB = sns.catplot(data=relative_diffs,
+                   height=8, aspect=0.75, fliersize=3, width=0.8,
+                   x='people', y= 'Proportion Effectively Vaccinated',
                    margin_titles=False,legend=False,
-                   col='Output', col_order=just_totals_outputs, col_wrap=2, hue='Testing Regime',
+                   col='Output', col_order=just_totals_outputs, col_wrap=2,
+                   hue='Testing Regime',
+                   hue_order=testing_regimes,
+                   sharex=False, palette=palette_dict, kind="box", showmeans=True, meanprops=box_plot_mean_marker)
+#sns.move_legend(loc='lower right',obj=figB, bbox_to_anchor=(.975, .075), frameon=True)
+axes = figB.axes
+for index, ax in enumerate(axes):
+    ax.set(xlabel = '% Difference in ' + just_totals_outputs[index].title())
+figB.set_titles(col_template="", row_template="")
+plt.figtext(0.01, 0.01, s='B:', fontdict={'fontsize':'x-large',
+                                            'fontweight':'bold'})
+legend = plt.legend(title='Testing Regime')
+frame = legend.get_frame()
+frame.set_facecolor('white')
+plt.tight_layout()
+plt.savefig(fig_dir+'Rel Diff Bxplts testing regimes and props vacc (Totals) 1.eps')
+
+plt.figure()
+figB = sns.catplot(data=relative_diffs,
+                   height=8, aspect=0.75, fliersize=3, width=0.8,
+                   x='people', y= 'Proportion Effectively Vaccinated',
+                   margin_titles=False,legend=False,
+                   col='Output', col_order=just_totals_outputs, col_wrap=2,
+                   hue='Testing Regime',
                    hue_order=testing_regimes,
                    sharex=False, palette=palette_dict, kind="box", showmeans=True, meanprops=box_plot_mean_marker)
 axes = figB.axes
 for index, ax in enumerate(axes):
     ax.set(xlabel = '% Difference in ' + just_totals_outputs[index].title())
+    if index == 0:
+        ax.set(xlim=(-25,40))
+    else:
+        ax.set(xlim=(-15, 150))
 figB.set_titles(col_template="", row_template="")
-# plt.figtext(0.025, 0.05, s='B:', fontdict={'fontsize':'xx-large',
-#                                            'fontweight':'bold'})
-plt.savefig(fig_dir+'Relative Diff Boxplots testing regimes and props vaccinated (Totals) 1.png')
-# plt.show()
-plt.figure()
-plotting_df = relative_diffs[relative_diffs['Proportion Effectively Vaccinated'].isin(['0.5','0.75'])]
-figC = sns.catplot(data=plotting_df,
-                   height=3, aspect=1.8,
-                   x='people', y='Proportion Effectively Vaccinated',
-                   margin_titles=False,legend=False,
-                   col='Output', col_order=just_totals_outputs, col_wrap=2, hue='Testing Regime',
-                   hue_order=testing_regimes,
-                   sharex=False, palette=palette_dict, kind="box", showmeans=True, meanprops=box_plot_mean_marker)
-axes = figC.axes
-for index, ax in enumerate(axes):
-    ax.set(xlabel = '% Difference in ' + just_totals_outputs[index].title())
-figC.set_titles(col_template="", row_template="")
-plt.figtext(0.025, 0.05, s='B:', fontdict={'fontsize':'xx-large',
-                                           'fontweight':'bold'})
-plt.savefig(fig_dir+'Relative Diff Boxplots testing regimes and props vaccinated (Totals) 2.png')
-# plt.show()
+plt.figtext(0.01, 0.01, s='C:', fontdict={'fontsize':'x-large',
+                                            'fontweight':'bold'})
+plt.tight_layout()
+plt.savefig(fig_dir+'Rel Diff Bxplts testing regimes and props vacc (Totals) 2.eps')
 
 plt.figure()
 figA = sns.catplot(data=control_results,
@@ -233,5 +236,4 @@ legend_info = figC.axes[0].get_legend_handles_labels()
 plt.legend(*figC.axes[0].get_legend_handles_labels(), loc= (0.8,0.85))
 sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
 plt.tight_layout()
-plt.savefig(fig_dir+'Control of Relative Diff Boxplots testing regimes and props vaccinated (Totals).png')
-
+plt.savefig(fig_dir+'Ctrl Rel Diff Bxplts testing regimes and props vacc (Totals).eps')
