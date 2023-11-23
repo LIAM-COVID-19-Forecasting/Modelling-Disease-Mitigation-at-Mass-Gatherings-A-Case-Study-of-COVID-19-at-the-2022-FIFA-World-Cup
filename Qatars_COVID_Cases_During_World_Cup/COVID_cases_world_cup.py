@@ -103,5 +103,5 @@ fig.refline(x = quater_finals_begin,
 fig.axes[0,0].set_ylabel('New Cases Smoothed')
 fig.axes[1,0].set_ylabel('Total in Hospital')
 plt.tight_layout()
-plt.savefig('Covid cases around world.eps')
+plt.savefig('Fig7.eps')
 

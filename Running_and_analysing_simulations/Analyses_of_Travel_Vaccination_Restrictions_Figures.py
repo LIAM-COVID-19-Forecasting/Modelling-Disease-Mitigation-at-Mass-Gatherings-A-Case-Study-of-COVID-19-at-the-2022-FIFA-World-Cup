@@ -170,13 +170,32 @@ plt.savefig(fig_dir+'Ctrl of Rel Diff Bxplts testing regimes and props vacc.eps'
 
 
 
-#%%%
+#%%% Figure 5 of manuscript
+# These sub-figures have been merged and labeled A-Bin powerpoint for the manuscript.
+
+plt.figure()
+figA = sns.catplot(data=control_results,
+                   height=2, aspect=2,
+                   x='people',
+                   margin_titles=False, color=palette_dict['No Testing'],
+                   col='Output', col_order=just_totals_outputs, col_wrap=2,
+                   sharex=False, kind="box", showmeans=True, meanprops=box_plot_mean_marker)
+axes = figA.axes
+for index, ax in enumerate(axes):
+    ax.set(xlabel = outputs[index].title())
+    # ax.ticklabel_format(axis='x', style='scientific', scilimits=(0, 0))
+figA.set_titles(col_template="", row_template="")
+legend_info = figC.axes[0].get_legend_handles_labels()
+plt.legend(*figC.axes[0].get_legend_handles_labels(), loc= (0.8,0.85))
+sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
+plt.tight_layout()
+plt.savefig(fig_dir+'Fig5A.png')
 
 plt.figure()
 sns.set_style('darkgrid', {'legend.frameon':True})
 plt.legend(facecolor='white', framealpha=1)
 figB = sns.catplot(data=relative_diffs,
-                   height=8, aspect=0.75, fliersize=3, width=0.8,
+                   height=6, aspect=0.85, fliersize=3, width=0.8,
                    x='people', y= 'Proportion Effectively Vaccinated',
                    margin_titles=False,legend=False,
                    col='Output', col_order=just_totals_outputs, col_wrap=2,
@@ -188,17 +207,34 @@ axes = figB.axes
 for index, ax in enumerate(axes):
     ax.set(xlabel = '% Difference in ' + just_totals_outputs[index].title())
 figB.set_titles(col_template="", row_template="")
-plt.figtext(0.01, 0.01, s='B:', fontdict={'fontsize':'x-large',
-                                            'fontweight':'bold'})
 legend = plt.legend(title='Testing Regime')
 frame = legend.get_frame()
 frame.set_facecolor('white')
 plt.tight_layout()
-plt.savefig(fig_dir+'Rel Diff Bxplts testing regimes and props vacc (Totals) 1.eps')
+plt.savefig(fig_dir+'Fig5B.png')
+#%%% Figure 6 of manuscript
+# These sub-figures have been merged and labeled A-Bin powerpoint for the manuscript.
 
 plt.figure()
+figA = sns.catplot(data=control_results,
+                   height=2, aspect=2,
+                   x='people',
+                   margin_titles=False, color=palette_dict['No Testing'],
+                   col='Output', col_order=just_totals_outputs, col_wrap=2,
+                   sharex=False, kind="box", showmeans=True, meanprops=box_plot_mean_marker)
+axes = figA.axes
+for index, ax in enumerate(axes):
+    ax.set(xlabel = outputs[index].title())
+    # ax.ticklabel_format(axis='x', style='scientific', scilimits=(0, 0))
+figA.set_titles(col_template="", row_template="")
+legend_info = figC.axes[0].get_legend_handles_labels()
+plt.legend(*figC.axes[0].get_legend_handles_labels(), loc= (0.8,0.85))
+sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
+plt.tight_layout()
+plt.savefig(fig_dir+'Fig6A.png')
+plt.figure()
 figB = sns.catplot(data=relative_diffs,
-                   height=8, aspect=0.75, fliersize=3, width=0.8,
+                   height=6, aspect=0.85, fliersize=3, width=0.8,
                    x='people', y= 'Proportion Effectively Vaccinated',
                    margin_titles=False,legend=False,
                    col='Output', col_order=just_totals_outputs, col_wrap=2,
@@ -213,27 +249,7 @@ for index, ax in enumerate(axes):
     else:
         ax.set(xlim=(-15, 150))
 figB.set_titles(col_template="", row_template="")
-plt.figtext(0.01, 0.01, s='C:', fontdict={'fontsize':'x-large',
-                                            'fontweight':'bold'})
 plt.tight_layout()
-plt.savefig(fig_dir+'Rel Diff Bxplts testing regimes and props vacc (Totals) 2.eps')
+plt.savefig(fig_dir+'Fig6B.png')
 
-plt.figure()
-figA = sns.catplot(data=control_results,
-                   height=2, aspect=2,
-                   x='people',
-                   margin_titles=False, color=palette_dict['No Testing'],
-                   col='Output', col_order=just_totals_outputs, col_wrap=2,
-                   sharex=False, kind="box", showmeans=True, meanprops=box_plot_mean_marker)
-axes = figA.axes
-for index, ax in enumerate(axes):
-    ax.set(xlabel = outputs[index].title())
-    # ax.ticklabel_format(axis='x', style='scientific', scilimits=(0, 0))
-figA.set_titles(col_template="", row_template="")
-plt.figtext(0.01, 0.01, s='A:', fontdict={'fontsize':'x-large',
-                                          'fontweight':'bold'})
-legend_info = figC.axes[0].get_legend_handles_labels()
-plt.legend(*figC.axes[0].get_legend_handles_labels(), loc= (0.8,0.85))
-sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
-plt.tight_layout()
-plt.savefig(fig_dir+'Ctrl Rel Diff Bxplts testing regimes and props vacc (Totals).eps')
+

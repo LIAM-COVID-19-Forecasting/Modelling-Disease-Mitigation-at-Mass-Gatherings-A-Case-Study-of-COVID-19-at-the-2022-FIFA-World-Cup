@@ -141,7 +141,7 @@ fig.set_yticklabels(output_labels)
 plt.tight_layout(rect=(0,0,0.8,1))
 plt.savefig(fig_dir + 'Test Regime PCCs against no testing.png')
 
-#%%
+#%% Figure 2 of manuscript.
 plt.figure()
 fig = sns.catplot(data=test_PCC, height=7, aspect=0.9,
                   hue='Test Regime', hue_order=actual_testing_regimes, palette=palette_dict,
@@ -152,7 +152,7 @@ fig.ax.set(xlabel='Partial Rank Correlation Coefficient')
 fig.set_yticklabels(just_totals_output_labels)
 
 plt.tight_layout(rect=(0,0,0.8,1))
-plt.savefig(fig_dir + 'Test Regime PCCs against no testing (Totals).eps')
+plt.savefig(fig_dir + 'Fig2.eps')
 
 
 #%%
@@ -236,7 +236,7 @@ for name, params_or_vars in orders.items():
     plt.tight_layout(rect=(0,0,0.875,1))
     plt.savefig(fig_dir+'PRCCs '+ name +' on outputs.png')
 
-#%%
+#%% Figure 4
 
 params_related_to_npis = ['kappa', 'theta', 'v_A', 'v_B']
 params_related_to_npis_legend = ['$\kappa$', '$\\theta$', '$v_A$', '$v_B$']
@@ -255,7 +255,9 @@ for index, ax in enumerate(fig.axes):
 handles, labels = ax.get_legend_handles_labels() # needed for legend of a later figure.
 fig.set_yticklabels(params_related_to_npis_legend)
 plt.tight_layout(rect=(0, 0, 0.875, 1))
-plt.savefig(fig_dir+'PRCCs params related to npis on Totals.eps')
+#plt.figtext(0.03, 0.03, s='A', fontdict={'fontsize':'x-large'})
+#plt.figtext(0.46, 0.03, s='B', fontdict={'fontsize':'x-large'})
+plt.savefig(fig_dir+'Fig4.eps')
 
 
 #%%
@@ -303,7 +305,9 @@ relative_diffs = relative_diffs.reset_index()
 relative_diffs.rename(columns={'level_2':'Testing Regime'}, inplace=True)
 
 plt.figure()
-pre_travel_regimes = ['Pre-travel RTPCR', 'Pre-travel RA low', 'Pre-travel RA mid', 'Pre-travel RA high']
+pre_travel_regimes = ['Pre-travel RTPCR', 'Pre-travel RA low', 'Pre-travel RA mid']
+other_regimes = [regime for regime in testing_regimes
+                 if regime not in pre_travel_regimes + ['No Testing']]
 fig = sns.catplot(data=relative_diffs[relative_diffs['Testing Regime'].isin(pre_travel_regimes)],
                   height=3.5, aspect=2,
                   x='people', y='Testing Regime', margin_titles=False,
@@ -343,6 +347,24 @@ fig.set_titles(col_template="", row_template="")
 plt.tight_layout()
 plt.savefig(fig_dir+'Control Relative Difference Boxplots Testing regimes vs No Testing.png')
 
+#%% Figure 3 of manuscript
+# These sub-figures have been merged and labeled A-B-C in powerpoint for the manuscript.
+
+# Fig3A
+plt.figure()
+fig = sns.catplot(data=control_df ,
+                  height=1.5, aspect=1.9,
+                  x='people', margin_titles=False,
+                  col='Output', col_order=just_totals_outputs, col_wrap=2,
+                  sharex=False, color=palette_dict['No Testing'], kind="box", showmeans=True, meanprops=box_plot_mean_marker)
+axes = fig.axes
+for index, ax in enumerate(axes):
+    ax.set(xlabel = outputs[index].title())
+fig.set_titles(col_template="", row_template="")
+plt.tight_layout()
+plt.savefig(fig_dir+'Fig3A.png')
+
+# Fig3B
 plt.figure()
 fig = sns.catplot(data=relative_diffs[relative_diffs['Testing Regime'].isin(pre_travel_regimes)],
                   height=2, aspect=3,
@@ -354,7 +376,7 @@ for index, ax in enumerate(axes):
     ax.set(xlabel = '% Difference in ' + just_totals_outputs[index].title())
 fig.set_titles(col_template="", row_template="")
 plt.tight_layout()
-plt.savefig(fig_dir+'Rel Diff Bxplts Testing regimes vs No Testing (Totals) v1.eps')
+plt.savefig(fig_dir+'Fig3B.png')
 
 plt.figure()
 fig = sns.catplot(data=relative_diffs[~relative_diffs['Testing Regime'].isin(pre_travel_regimes)],
@@ -367,24 +389,7 @@ for index, ax in enumerate(axes):
     ax.set(xlabel = '% Difference in ' + just_totals_outputs[index].title())
 fig.set_titles(col_template="", row_template="")
 plt.tight_layout()
-plt.figtext(0.025, 0.05, s='B:', fontdict={'fontsize':'xx-large',
-                                           'fontweight':'bold'})
-plt.savefig(fig_dir+'Rel Diff Bxplts Testing regimes vs No Testing (Totals) v2.eps')
-
-plt.figure()
-fig = sns.catplot(data=control_df ,
-                  height=1.5, aspect=1.9,
-                  x='people', margin_titles=False,
-                  col='Output', col_order=just_totals_outputs, col_wrap=2,
-                  sharex=False, color=palette_dict['No Testing'], kind="box", showmeans=True, meanprops=box_plot_mean_marker)
-axes = fig.axes
-for index, ax in enumerate(axes):
-    ax.set(xlabel = outputs[index].title())
-fig.set_titles(col_template="", row_template="")
-plt.tight_layout()
-plt.figtext(0.01, 0.01, s='A:', fontdict={'fontsize':'small',
-                                          'fontweight':'bold'})
-plt.savefig(fig_dir+'Ctrl Rel Diff Bxplts Testing reg vs No Testing (Totals).eps')
+plt.savefig(fig_dir+'Fig3C.png')
 
 
 
