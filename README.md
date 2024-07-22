@@ -2,6 +2,12 @@
 
 Supplementary Material for article Modelling Disease Mitigation at Mass Gatherings: A Case Study of COVID-19 at the 2022 FIFA World Cup.
 
+## Improved, Generic and Packaged Version of Code: MetaCast
+
+An improved more generic version of this code has been published as the package MetaCast, see:
+* https://github.com/m-d-grunnill/MetaCast
+* Grunnill et al., (2024). MetaCast: A package for broadCASTing epidemiological and ecological models over META-populations.. Journal of Open Source Software, 9(99), 6851, https://doi.org/10.21105/joss.06851
+* https://pypi.org/project/metacast/
 
 ## Required Packages
 - scipy
