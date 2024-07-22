@@ -2,7 +2,7 @@
 
 Supplementary Material for article Modelling Disease Mitigation at Mass Gatherings: A Case Study of COVID-19 at the 2022 FIFA World Cup.
 
-## Improved, Generic and Packaged Version of Code: MetaCast
+##  MetaCast: Improved, more Generic and Packaged Version of Code
 
 An improved more generic version of this code has been published as the package MetaCast, see:
 * https://github.com/m-d-grunnill/MetaCast
